@@ -1,6 +1,7 @@
 package com.auto_parts_online_shop.controller;
 
 import com.auto_parts_online_shop.dto.Message;
+import com.auto_parts_online_shop.exception.FormatException.FormatException;
 import com.auto_parts_online_shop.model.Make;
 import com.auto_parts_online_shop.service.MakeService;
 import jakarta.validation.Valid;
@@ -29,21 +30,42 @@ public class MakeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Make> getManufacturer(@PathVariable Long id) {
-        return ResponseEntity.ok(makeService.getById(id));
+    public ResponseEntity<Make> getManufacturer(@PathVariable String id) {
+        long lId;
+        try {
+            lId = Long.parseLong(id);
+        } catch (Exception e) {
+            throw new FormatException(e.getMessage());
+        }
+
+        return ResponseEntity.ok(makeService.getById(lId));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Make> updateManufacturer(@PathVariable Long id, @RequestBody @Valid Make make) {
-        return ResponseEntity.ok(makeService.update(id, make));
+    public ResponseEntity<Make> updateManufacturer(@PathVariable String id, @RequestBody @Valid Make make) {
+        long lId;
+        try {
+            lId = Long.parseLong(id);
+        } catch (Exception e) {
+            throw new FormatException(e.getMessage());
+        }
+
+        return ResponseEntity.ok(makeService.update(lId, make));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<List<Message>> delete(@PathVariable Long id) {
-        makeService.delete(id);
+    public ResponseEntity<List<Message>> delete(@PathVariable String id) {
+        long lId;
+        try {
+            lId = Long.parseLong(id);
+        } catch (Exception e) {
+            throw new FormatException(e.getMessage());
+        }
+
+        makeService.delete(lId);
 
         List<Message> messages = new ArrayList<>();
-        messages.add(new Message("message", String.format("Manufacturer with id (%s) was successfully deleted", id)));
+        messages.add(new Message("message", String.format("Manufacturer with id (%s) was successfully deleted", lId)));
 
         return ResponseEntity.ok(messages);
     }
