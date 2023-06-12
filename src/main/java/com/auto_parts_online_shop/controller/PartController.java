@@ -2,6 +2,7 @@ package com.auto_parts_online_shop.controller;
 
 import com.auto_parts_online_shop.dto.Message;
 import com.auto_parts_online_shop.dto.PartDto;
+import com.auto_parts_online_shop.exception.FormatException.FormatException;
 import com.auto_parts_online_shop.model.Part;
 import com.auto_parts_online_shop.service.PartService;
 import jakarta.validation.Valid;
@@ -25,8 +26,15 @@ public class PartController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Part> get(@PathVariable Long id) {
-        return ResponseEntity.ok(partService.get(id));
+    public ResponseEntity<Part> get(@PathVariable String id) {
+        long lId;
+        try {
+            lId = Long.parseLong(id);
+        } catch (Exception e) {
+            throw new FormatException(e.getMessage());
+        }
+
+        return ResponseEntity.ok(partService.get(lId));
     }
 
     @GetMapping("/{categoryId}/{modelId}")
@@ -50,8 +58,15 @@ public class PartController {
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<List<Message>> delete(@PathVariable Long id) {
-        partService.delete(id);
+    public ResponseEntity<List<Message>> delete(@PathVariable String id) {
+        long lId;
+        try {
+            lId = Long.parseLong(id);
+        } catch (Exception e) {
+            throw new FormatException(e.getMessage());
+        }
+
+        partService.delete(lId);
 
         List<Message> messages = new ArrayList<>();
         messages.add(new Message("message", "Part with id (%s) was successfully deleted"));

@@ -6,8 +6,6 @@ import com.auto_parts_online_shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -22,5 +20,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 }

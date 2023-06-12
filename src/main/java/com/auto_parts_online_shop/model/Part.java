@@ -37,7 +37,28 @@ public class Part {
     private PartCategory partCategory;
 
     @NotNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "models_id", referencedColumnName = "id", nullable = false)
     private List<Model> modelList;
+
+    @Override
+    public boolean equals(Object obj) {
+        Part part = (Part) obj;
+
+        if (!id.equals(part.id)) return false;
+        if (!name.equals(part.name)) return false;
+        if (!description.equals(part.description)) return false;
+        if (!price.equals(part.price)) return false;
+        if (!partCategory.getId().equals(part.partCategory.getId())) return false;
+        for (int i = 0; i < modelList.size(); i++) {
+            if (!modelList.get(i).getId().equals(part.getModelList().get(i).getId())) return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

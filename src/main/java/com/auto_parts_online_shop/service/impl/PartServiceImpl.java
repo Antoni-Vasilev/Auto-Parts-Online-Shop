@@ -9,6 +9,7 @@ import com.auto_parts_online_shop.repository.PartRepository;
 import com.auto_parts_online_shop.service.ModelService;
 import com.auto_parts_online_shop.service.PartCategoryService;
 import com.auto_parts_online_shop.service.PartService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PartServiceImpl implements PartService {
 

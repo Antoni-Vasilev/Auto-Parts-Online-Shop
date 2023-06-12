@@ -7,4 +7,6 @@ public interface UserService {
     User register(User user);
 
     User getByEmail(String email);
+
+    void delete(User user);
 }
